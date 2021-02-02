@@ -1,0 +1,48 @@
+﻿@model Tuple<List<Activity3Part1.Models.CustomerModel>, Activity3Part1.Models.CustomerModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Welcome to Activity 3 Part 1";
+    AjaxOptions ajaxOptions = new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "customerInfo"
+    };
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Customer</title>
+</head>
+<body>
+    <div>
+        @using (Ajax.BeginForm("onSelectCustomer", "Customer", ajaxOptions))
+        {
+            @Html.AntiForgeryToken()
+                bool selected = false;
+                foreach (Activity3Part1.Models.CustomerModel customer in Model.Item1)
+                {
+                    if(customer == Model.Item2)
+                    {
+                        selected = true;
+                    } else
+                    {
+                        selected = false;
+                    }
+                @Html.RadioButton("Customer", customer.ID, selected, new { onchange = "submit()" })
+                @Html.Label(customer.Name)
+                <br />
+            }
+        }
+
+        <div id="customerInfo">
+            @Html.Partial("_CustomerDetails", Model.Item2)
+        </div>
+
+    </div>
+</body>
+</html>
