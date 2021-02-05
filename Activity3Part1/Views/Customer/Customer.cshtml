@@ -6,7 +6,8 @@
     {
         HttpMethod = "POST",
         InsertionMode = InsertionMode.Replace,
-        UpdateTargetId = "customerInfo"
+        UpdateTargetId = "customerInfo",
+        OnSuccess = "ajaxSuccess"
     };
 }
 
@@ -20,7 +21,10 @@
 </head>
 <body>
     <div>
-        @using (Ajax.BeginForm("onSelectCustomer", "Customer", ajaxOptions))
+        <script>
+            $.post('@Url.Action("GetMoreInfo", "Customer")', { customer: 2 }, function (data) { alert(data); });
+        </script>
+        @using (Ajax.BeginForm("onSelectCustomer", "Customer", ajaxOptions, new { id = "myForm" }))
         {
             @Html.AntiForgeryToken()
                 bool selected = false;
@@ -33,7 +37,7 @@
                     {
                         selected = false;
                     }
-                @Html.RadioButton("Customer", customer.ID, selected, new { onchange = "submit()" })
+                @Html.RadioButton("Customer", customer.ID, selected, new { onchange = "$('#myForm').trigger('submit')" })
                 @Html.Label(customer.Name)
                 <br />
             }

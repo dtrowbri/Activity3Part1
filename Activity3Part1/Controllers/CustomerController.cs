@@ -35,5 +35,10 @@ namespace Activity3Part1.Controllers
             return PartialView("_CustomerDetails", customerTuple.Item2);
         }
 
+        [HttpPost]
+        public string GetMoreInfo(string customerId)
+        {
+            return "We interupt your daily programming for this very important vanity message!";
+        }
     }
 }
